@@ -3,7 +3,47 @@
 #include <string.h>
 #include <stdlib.h>
 
-int main()
+void choice();
+
+void encrypt(const char *key, const char *file)
+{
+    FILE *fp = fopen(file, "r");
+    if (fp == NULL)
+    {
+        printf("File not found!\n");
+        choice();
+    }
+
+    char ch;
+
+    char output_file[260] = "encrypted_";
+
+    strcat(output_file, file);
+
+    FILE *fp2 = fopen(output_file, "w");
+
+    int i = 0;
+    int len = strlen(key);
+
+    while (fgets(&ch, sizeof(ch), fp) != NULL)
+    {
+
+        char encrypted_char = ch + key[i];
+        fputc(encrypted_char, fp2);
+
+        i++;
+
+        if (i >= len)
+            i = 0;
+    }
+}
+
+void decrypt(const char *key, const char *file)
+{
+    // Decryption logic goes here
+}
+
+void choice()
 {
     printf("Welcome to the Cryptography Tool\n");
     char key[50];
@@ -12,29 +52,22 @@ int main()
     scanf(" %s", key);
     printf("Enter the file path of your message: ");
     scanf(" %s", file);
-    return 0;
-}
-
-void encrypt(const char *key, const char *file)
-{
-    FILE *fp = fopen(file, "r");
-    if (fp == NULL)
+    printf("Choose an option:\n");
+    printf("1. Encrypt a message\n");
+    printf("2. Decrypt a message\n");
+    int option;
+    scanf("%d", &option);
+    if (option == 1)
     {
-        printf("File not found!\n");
-        return -1;
+        encrypt(key, file);
     }
-    fclose(fp);
-    char buffer[1024];
-    char output_file[260] = "encrypted_";
-    strcat(output_file, file);
-    FILE *fp2 = fopen(file, "w");
-    while (fgets(buffer, sizeof(buffer), fp) != NULL)
+    else if (option == 2)
     {
-        // storing the data and encrypting it
+        decrypt(key, file);
     }
-}
-
-void decrypt(const char *key, const char *file)
-{
-    // Decryption logic goes here
+    else
+    {
+        printf("Invalid option. Please try again.\n");
+        choice();
+    }
 }
