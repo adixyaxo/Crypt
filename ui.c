@@ -1,1 +1,0 @@
-// This file would contain the ui of the game created using gtk
